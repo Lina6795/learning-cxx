@@ -6,6 +6,7 @@
 // 在 `enum` 中定义标识符等价于定义 constexpr 常量，
 // 这些标识符不需要前缀，可以直接引用。
 // 因此 `enum` 定义会污染命名空间。
+//  RISCV 非对齐访存是直接会触发硬件异常的。所以在高级语言层面直接转换两个对齐不同的类型的指针肯定是有问题的。
 enum ColorEnum : unsigned char {
     COLOR_RED = 31,
     COLOR_GREEN,
@@ -37,7 +38,7 @@ ColorEnum convert_by_pun(Color c) {
 
     TypePun pun;
     // TODO: 补全类型双关转换
-
+    pun.c = c;
     return pun.e;
 }
 
