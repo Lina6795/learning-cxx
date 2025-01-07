@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
         std::vector<int> vec{1, 2, 3, 4, 5};
         ASSERT(vec.size() == 5, "Fill in the correct value.");
         // THINK: `std::vector` 的大小是什么意思？与什么有关？
-        ASSERT(sizeof(vec) == sizeof(std::vector<int>), "Fill in the correct value.");
+        ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         int ans[]{1, 2, 3, 4, 5};
         ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
     }
@@ -18,17 +18,17 @@ int main(int argc, char **argv) {
         std::vector<double> vec{1, 2, 3, 4, 5};
         {
             ASSERT(vec.size() == 5, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == sizeof(std::vector<double>), "Fill in the correct value.");
+            ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
             double ans[]{1, 2, 3, 4, 5};
             ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
         }
         {
             vec.push_back(6);
             ASSERT(vec.size() == 6, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == sizeof(std::vector<int>), "Fill in the correct value.");
+            ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
             vec.pop_back();
             ASSERT(vec.size() == 5, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == sizeof(std::vector<int>), "Fill in the correct value.");
+            ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         }
         {
             vec[4] = 6;
@@ -47,12 +47,11 @@ int main(int argc, char **argv) {
         }
         {
             vec.shrink_to_fit();
-            // 收缩后容量一般等于当前元素个数，这里元素个数是5
             ASSERT(vec.capacity() == 5, "Fill in the correct value.");
             vec.clear();
             ASSERT(vec.empty(), "`vec` is empty now.");
             ASSERT(vec.size() == 0, "Fill in the correct value.");
-            ASSERT(vec.capacity() == 0, "Fill in the correct value.");
+            ASSERT(vec.capacity() == 5, "Fill in the correct value.");
         }
     }
     {
@@ -60,7 +59,7 @@ int main(int argc, char **argv) {
         ASSERT(vec[0] == 'z', "Make this assertion pass.");
         ASSERT(vec[47] == 'z', "Make this assertion pass.");
         ASSERT(vec.size() == 48, "Make this assertion pass.");
-        ASSERT(sizeof(vec) == sizeof(std::vector<char>), "Fill in the correct value.");
+        ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         {
             auto capacity = vec.capacity();
             vec.resize(16);
@@ -68,9 +67,8 @@ int main(int argc, char **argv) {
             ASSERT(vec.capacity() == capacity, "Fill in a correct identifier.");
         }
         {
-            // reserve 函数用于预留指定容量，调用后容量会变为指定的值（如果当前容量小于指定值），但元素个数 size 不会改变
             vec.reserve(256);
-            ASSERT(vec.size() == 256, "Fill in the correct value.");
+            ASSERT(vec.size() == 16, "Fill in the correct value.");
             ASSERT(vec.capacity() == 256, "Fill in the correct value.");
         }
         {
@@ -79,9 +77,8 @@ int main(int argc, char **argv) {
             vec.push_back('c');
             vec.push_back('d');
             ASSERT(vec.size() == 20, "Fill in the correct value.");
-            // 容量在 push_back 操作时如果超过当前容量会自动扩容，由于之前 reserve 了 256，所以容量依旧是 256
             ASSERT(vec.capacity() == 256, "Fill in the correct value.");
-            ASSERT(vec[15] == '\0', "Fill in the correct value.");
+            ASSERT(vec[15] == 'z', "Fill in the correct value.");
             ASSERT(vec[16] == 'a', "Fill in the correct value.");
             ASSERT(vec[17] == 'b', "Fill in the correct value.");
             ASSERT(vec[18] == 'c', "Fill in the correct value.");

@@ -1,8 +1,8 @@
 ﻿#include "../exercise.h"
-#include <cstring>
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstring>
 
 // READ: `std::unique_ptr` <https://zh.cppreference.com/w/cpp/memory/unique_ptr>
 
@@ -23,15 +23,21 @@ public:
 
 using Unique = std::unique_ptr<Resource>;
 Unique reset(Unique ptr) {
-    if (ptr) ptr->record('r');
+    if (ptr) {
+        ptr->record('r');
+    }
     return std::make_unique<Resource>();
 }
 Unique drop(Unique ptr) {
-    if (ptr) ptr->record('d');
+    if (ptr) {
+        ptr->record('d');
+    }
     return nullptr;
 }
 Unique forward(Unique ptr) {
-    if (ptr) ptr->record('f');
+    if (ptr) {
+        ptr->record('f');
+    }
     return ptr;
 }
 
@@ -52,9 +58,8 @@ int main(int argc, char **argv) {
     std::vector<const char *> answers[]{
         {"fd"},
         // TODO: 分析 problems[1] 中资源的生命周期，将记录填入 `std::vector`
-        // NOTICE: 此题结果依赖对象析构逻辑，平台相关，提交时以 CI 实际运行平台为准
-        {"", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", ""},
+        {"d", "ffr"},
+        {"d", "d", "r"},
     };
 
     // ---- 不要修改以下代码 ----
