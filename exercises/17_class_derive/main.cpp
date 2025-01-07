@@ -2,17 +2,21 @@
 
 // READ: 派生类 <https://zh.cppreference.com/w/cpp/language/derived_class>
 
+// 静态全局变量i，用于记录构造和析构函数的调用次数
 static int i = 0;
 
 struct X {
     int x;
 
+    // 构造函数，接受一个整型参数
     X(int x_) : x(x_) {
         std::cout << ++i << ". " << "X(" << x << ')' << std::endl;
     }
+    // 拷贝构造函数
     X(X const &other) : x(other.x) {
         std::cout << ++i << ". " << "X(X const &) : x(" << x << ')' << std::endl;
     }
+    // 析构函数
     ~X() {
         std::cout << ++i << ". " << "~X(" << x << ')' << std::endl;
     }
@@ -30,15 +34,19 @@ struct A {
         std::cout << ++i << ". " << "~A(" << a << ')' << std::endl;
     }
 };
+// 派生类B，继承自A
 struct B : public A {
     X x;
 
+    // 先调用基类A的构造函数，再调用成员变量x的构造函数
     B(int b) : A(1), x(b) {
         std::cout << ++i << ". " << "B(" << a << ", X(" << x.x << "))" << std::endl;
     }
+    // 先调用基类A的拷贝构造函数，再对自身包含的X类型的成员变量x进行拷贝构造
     B(B const &other) : A(other.a), x(other.x) {
         std::cout << ++i << ". " << "B(B const &) : A(" << a << "), x(X(" << x.x << "))" << std::endl;
     }
+    // 释放B类型对象生命周期结束时被调用
     ~B() {
         std::cout << ++i << ". " << "~B(" << a << ", X(" << x.x << "))" << std::endl;
     }
@@ -50,9 +58,9 @@ int main(int argc, char **argv) {
     B b = B(3);
 
     // TODO: 补全三个类型的大小
-    static_assert(sizeof(X) == ?, "There is an int in X");
-    static_assert(sizeof(A) == ?, "There is an int in A");
-    static_assert(sizeof(B) == ?, "B is an A with an X");
+    static_assert(sizeof(X) == sizeof(int), "There is an int in X");
+    static_assert(sizeof(A) == sizeof(int), "There is an int in A");
+    static_assert(sizeof(B) == sizeof(int) + sizeof(X), "B is an A with an X");
 
     i = 0;
     std::cout << std::endl

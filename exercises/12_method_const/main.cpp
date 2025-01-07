@@ -5,18 +5,14 @@
 struct Fibonacci {
     int numbers[11];
     // TODO: 修改方法签名和实现，使测试通过
-    int get(int i) {
-        numbers[0] = 0;
-        numbers[1] = 1;
-        for (int j = 2; j <= i; ++j) {
-            numbers[j] = numbers[j - 1] + numbers[j - 2];
-        }
+    // 修改方法签名和实现，添加const限定符，因为在main函数中FIB是constexpr对象，调用其成员函数要求成员函数为const成员函数（保证不会修改对象的状态），然后返回对应下标的值
+    int get(int i) const {
         return numbers[i];
     }
 };
 
 int main(int argc, char **argv) {
-    Fibonacci constexpr FIB{{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55}};
+    const Fibonacci FIB{{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55}};
     ASSERT(FIB.get(10) == 55, "fibonacci(10) should be 55");
     std::cout << "fibonacci(10) = " << FIB.get(10) << std::endl;
     return 0;

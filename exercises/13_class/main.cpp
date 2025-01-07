@@ -16,13 +16,19 @@ public:
     // TODO: 实现构造器
     // Fibonacci()
 
+    // 实现构造器，初始化缓存数组的前两个值，分别为0和1，同时将数组的第一位和第二位分别赋值为0和1。
+    Fibonacci() : cached(2) {
+        cache[0] = 0;
+        cache[1] = 1;
+    }
     // TODO: 实现正确的缓存优化斐波那契计算
     size_t get(int i) {
-        for (; false; ++cached) {
+        for (; cached<=i; ++cached) {
             cache[cached] = cache[cached - 1] + cache[cached - 2];
         }
         return cache[i];
     }
+
 };
 
 int main(int argc, char **argv) {
